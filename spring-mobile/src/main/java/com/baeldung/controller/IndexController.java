@@ -4,7 +4,11 @@ import java.util.logging.Logger;
 
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.baeldung.model.User;
 
 @Controller
 public class IndexController {
@@ -12,7 +16,7 @@ public class IndexController {
 	private final static Logger LOGGER = Logger.getLogger(IndexController.class.getName());
 
 	@GetMapping("/")
-	public String greeting(Device device) {
+	public String greeting(User user,Device device,Model model) {
 
 		String deviceType = "browser";
 		String platform = "browser";
@@ -30,10 +34,15 @@ public class IndexController {
 		if (platform.equalsIgnoreCase("UNKNOWN")) {
 			platform = "browser";
 		}
-
-		LOGGER.info("Client Device Type: " + deviceType + ", Platform: " + platform);
-
+		model.addAttribute("user", user);
 		return "index";
 	}
+	
+	 @PostMapping("/")
+	    public String formPost(User user, Model model) {
+	     model.addAttribute("user", user);
+	   
+	     return "index";
+	    }
 
 }
